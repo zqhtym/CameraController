@@ -1,5 +1,4 @@
 function hardResetBtnClick(button, url) {
-
     button.disabled = true;
 
     spinner = button.getElementsByClassName('spinner')[0];
