@@ -1,6 +1,4 @@
 function scheduleDeleteBtnClick(url) {
-
-
     $.ajax({
         url: url,
 
