@@ -9,20 +9,27 @@ from shared.di import obj_graph
 
 
 class CameraSetConfigView(View):
+    camera_ctrl_service = obj_graph().provide(CameraCtrlService)
     camera_config_service = obj_graph().provide(CameraConfigService)
 
-    def get(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         camera_id = kwargs['camera_id']
-        config_name = request.GET.get('config_name')
-        config_value = request.GET.get('config_value')
+        config_name = kwargs['config_name']
+        config_value = request.GET.get('value')
 
         try:
+            if camera_id.lower() == 'first':
+                camera = self.camera_ctrl_service.cameras_get_first()
+                if camera is None:
+                    raise CameraNotFoundException()
+                camera_id = camera.id
+
             self.camera_config_service.set_config(
                 camera_id=camera_id,
                 config_name=config_name,
                 config_value=config_value)
 
-            current_config = self.camera_config_service.get_configs(
+            current_config = self.camera_config_service.get_config(
                 camera_id=camera_id,
                 config_name=config_name)
 
