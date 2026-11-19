@@ -1,0 +1,2 @@
+# 原项目 .gitignore 的 *.manifest 规则会误伤启动器的清单文件
+!launcher/admin.manifest

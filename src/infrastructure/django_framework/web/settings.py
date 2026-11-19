@@ -137,7 +137,8 @@ DEFAULT_FROM_EMAIL = 'devemail42@gmail.com'
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+# Can be overridden (e.g. by the Windows launcher, which passes the Windows time zone)
+TIME_ZONE = os.environ.get('DJANGO_TIME_ZONE') or 'UTC'
 
 DATETIME_FORMAT = 'H:i:s N j Y'
 
