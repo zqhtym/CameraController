@@ -57,6 +57,23 @@
   建议把文件名格式改为 `5D2_{capture_index}` 或 `{timelapse_name}_{capture_index}`；不要用 `{camera_serial_nb}`
 - 定时任务的时间按 **Windows 当前时区**（启动器会自动传给程序）
 
+## 邮件通知（可选）
+
+程序在延时摄影出错时可以发邮件。仓库里不保存任何账号密码，需要时自己配置：
+
+1. 在项目的 `scripts\` 文件夹里新建 `appsettings.local.sh`（此文件不会被上传到 Git），内容例如：
+   ```sh
+   EMAIL_HOST='smtp.qq.com'          # 或 smtp.gmail.com、smtp.163.com 等
+   EMAIL_PORT=587
+   EMAIL_HOST_USER='你的邮箱@qq.com'
+   EMAIL_HOST_PASSWORD='邮箱的 SMTP 授权码'
+   DEFAULT_FROM_EMAIL='你的邮箱@qq.com'
+   ```
+2. 重新运行 `CameraController-Setup.exe`（把配置复制进 Linux 环境）
+3. 网页的 Settings 页面中填写收件人邮箱
+
+网页登录用的 `SECRET_KEY` 会在首次启动时自动随机生成，无需配置。
+
 ## 离线 / 网络慢
 
 把下列文件放进 `windows\offline\`，安装程序会优先使用：

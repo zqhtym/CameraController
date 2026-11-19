@@ -215,3 +215,6 @@ dmypy.json
 
 Timelapses/
 scripts/appsettings.local.sh
+
+# Django secret key generated per machine (see web/settings.py)
+secret_key.txt

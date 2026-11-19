@@ -22,7 +22,26 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '***REMOVED***'
+# Taken from DJANGO_SECRET_KEY, otherwise generated once per machine and stored in secret_key.txt
+# (git-ignored). Never commit a real key.
+def _load_secret_key():
+    key = os.environ.get('DJANGO_SECRET_KEY', '').strip()
+    if key:
+        return key
+
+    key_file = os.path.join(BASE_DIR, 'secret_key.txt')
+    if os.path.isfile(key_file):
+        with open(key_file) as f:
+            key = f.read().strip()
+    if not key:
+        import secrets
+        key = secrets.token_urlsafe(50)
+        with open(key_file, 'w') as f:
+            f.write(key)
+    return key
+
+
+SECRET_KEY = _load_secret_key()
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -124,12 +143,14 @@ LOGGING = {
     }
 }
 
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'devemail42@gmail.com'
-EMAIL_HOST_PASSWORD = "***REMOVED***"
-EMAIL_PORT = '587'
-EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'devemail42@gmail.com'
+# E-mail notifications (timelapse errors etc.). Configure through environment variables,
+# e.g. in scripts/appsettings.local.sh (git-ignored, loaded by run.sh and the Windows launcher).
+EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.gmail.com')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
+EMAIL_PORT = int(os.environ.get('EMAIL_PORT', '587'))
+EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', '1').lower() in ('1', 'true', 'yes')
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL') or EMAIL_HOST_USER or 'webmaster@localhost'
 
 
 # Internationalization

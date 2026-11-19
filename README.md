@@ -31,6 +31,14 @@ Install the python packages from `./requiremenets.txt`
 ## How to run
 `$ ./run.sh` - it should start the web app at the port 80 (python required)
 
+### Secrets / e-mail notifications
+No secrets are stored in the repository.
+- `SECRET_KEY`: read from `DJANGO_SECRET_KEY`; if unset, a random key is generated on first start and kept in
+  `src/infrastructure/django_framework/secret_key.txt` (git-ignored).
+- E-mail (sent on timelapse errors): set `EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_HOST_USER`, `EMAIL_HOST_PASSWORD`,
+  `DEFAULT_FROM_EMAIL` in `scripts/appsettings.local.sh` (git-ignored, loaded by `run.sh`), then add the recipients
+  in the web app's settings page. For Gmail use an app password.
+
 
 ## Timelapse file transfer
 The web app should automatically mount the nfs server and transfer the files to it. `./scripts/configs.sh` contains some settings you may want to tweak.
